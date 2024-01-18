@@ -1,0 +1,96 @@
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            {{#if success_messages}}
+            <div class="alert alert-success" role="alert" id="mess">
+                {{success_messages}}
+            </div>
+            {{/if}}
+            <div class="card">
+                <div class="card-header">Task List</div>
+
+                <div class="card-body">
+                    <div class="d-flex justify-content-around m-3">
+                        <h2><a class="btn btn-success" href="/projects/{{projectId}}/tasks/create">Add Task</a></h2>
+                        <h2><a class="btn btn-warning" href="/projects">Projects</a></h2>
+                    </div>
+
+                    <form method="GET" action="/projects/{{projectId}}/tasks" class="mb-3">
+                        <div class="row g-2">
+                            <div class="col-md-3">
+                                <select name="priority_id" id="priority_id" class="form-select">
+                                    <option value="" selected disabled>Select Priority</option>
+                                    {{#each priorities}}
+                                    <option value="{{id}}">{{name}}</option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    <input type="text" name="search" class="form-control" placeholder="Search"
+                                        value="{{searchTask}}">
+                                    <button type="submit" class="btn btn-primary">Apply Filter</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                    {{#if tasks.length}}
+                    <ul class="list-group">
+                        {{#each tasks}}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span class="{{#if completed}}completed{{/if}}">{{title}}</span>
+                            <div>
+                                <form action="/tasks/{{id}}/complete" method="POST" style="display:inline;">
+                                    <input type="hidden" name="completed" value="COMPLETE">
+                                    <button type="submit" class="btn btn-success">
+                                        {{#if completed}}
+                                        Unomplete
+                                        {{else}}
+                                        Complete
+                                        {{/if}}
+                                    </button>
+                                </form>
+                                <a class="btn btn-warning" href="/tasks/{{id}}/edit">Edit</a>
+                                <form action="/tasks/{{id}}/delete" method="POST" style="display:inline;">
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <input type="hidden" name="projectId" value="{{projectId}}">
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
+                            </div>
+                        </li>
+                        {{/each}}
+                    </ul>
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination justify-content-center">
+                            {{#paginate pagination type="previous"}}
+                            <li class="page-item {{#if disabled}}disabled{{/if}}">
+                                <a class="page-link" href="?page={{n}}&limit={{limit}}" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            {{/paginate}}
+
+                            {{#paginate pagination type="middle" limit="7"}}
+                            <li class="page-item {{#if active}}active{{/if}}">
+                                <a class="page-link" href="?page={{n}}&limit={{limit}}">{{n}}</a>
+                            </li>
+                            {{/paginate}}
+
+                            {{#paginate pagination type="next"}}
+                            <li class="page-item {{#if disabled}}disabled{{/if}}">
+                                <a class="page-link" href="?page={{n}}&limit={{limit}}" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                            {{/paginate}}
+                        </ul>
+                    </nav>
+                    {{else}}
+                    <p>No tasks available.</p>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

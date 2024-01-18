@@ -1,0 +1,28 @@
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">Add Task</div>
+
+                <div class="card-body">
+                    <form action="/projects/{{projectId}}/tasks/create" method="POST">
+                            <div class="mb-3">
+                                <label for="title" class="form-label">Task Title</label>
+                                <input type="text" class="form-control" id="title" name="title" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="priority_id" class="form-label">Task Priority</label>
+                                <select name="priority_id" id="priority_id" class="form-control">
+                                    {{#each priorities}}
+                                        <option value="{{id}}">{{name}}</option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                            <input type="hidden" name="project_id" id="project_id">
+                        <button type="submit" class="btn btn-primary">Add Task</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
